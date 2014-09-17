@@ -1,7 +1,7 @@
 ## Getting and Cleaning Data
 ## Course Project
 
-library(plyr)
+##library(plyr)
 library(dplyr)
 library(reshape2)
 
@@ -71,20 +71,29 @@ print("Dimensions of the reduced dataset")
 print(dim(reducedDS))
 
 #4) Appropriately labels the data set with descriptive variable names. 
-colnames(reducedDS) <- c(as.character(meanAndStd$V2), "Subject", "Label")
+colnames(reducedDS) <- c(as.character(meanAndStd$V2), "Label", "Subject")
 
 #3) Uses descriptive activity names to name the activities in the data set
-finalDS <- merge(reducedDS, activityLabels, by.x = "Label", by.y = "V1")
-finalDS <- mutate(finalDS, Activity = V2)
-finalDS <- select(finalDS, -V2)
-dim(finalDS)
+print("Final DS")
+finalDS <- reducedDS %>%
+  merge(activityLabels, by.x = "Label", by.y = "V1") %>%
+  mutate(Activity = V2) %>%
+  select(-V2, -Label)
+
+print(dim(finalDS))
 
 #5) From the data set in step 4, creates a second, independent tidy data set with the average 
 ## of each variable for each activity and each subject.
 ## Create step5_tidyData.txt file created with write.table() using row.name=FALSE 
 
-tidyData <- finalDS %>%
-  melt(id=c("Subject","Activity"))
+tidyData <- 
+  finalDS %>%
+  melt(id=c("Subject","Activity")) %>%
+  group_by(Subject, Activity, variable) %>%
+  summarise(mean(value))
 
-##write.table()
+print("TidyData")
+print(dim(tidyData))
+
+write.table(tidyData, "step5_tidyData.table", row.name=FALSE)
 
