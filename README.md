@@ -10,7 +10,7 @@ This R script requires the following libraries to be installed prior execution:
 * __reshape2__: Flexibly reshape data: a reboot of the reshape package.
 
 ### How to use the run_analysis.R script
-To run the **run_analysis.R** script you will need to source the file in R or RStudio and then call the `main`function
+To run the **run_analysis.R** script you will need to source the file in R or RStudio and then call the `main` function
 
 ```
 > source('run_analysis.R')
@@ -65,12 +65,12 @@ mergedDS <- rbind(trainDS, testDS)
 
    The `mergedDS` will be returned.
    
-3. `extractMeanAndSTD(dataSet)`: this function receives as input the merged dataset created on the previous function. This will read the __features.txt__ file into `features`. From this `features` data the function will filter only the mean and standard deviantion measures - for this it uses the `grepl` function using the patterns "-mean()" or "-std()"
+3. `extractMeanAndSTD(dataSet)`: this function receives as input the merged dataset created on the previous function. This will read the __features.txt__ file into `features`. From this `features` data the function will filter only the mean and standard deviation measures - for this it uses the `grepl` function using the patterns "-mean()" or "-std()"
 ```
 meanAndStd <- features[grepl("-(mean|std)\\(\\)", features$V2, perl = TRUE), ]
 ```
 The input dataset has 563 columns (561 columns with measures plus the subject and label).
-Using the `meanAnStd` dataset the script reduced the input dataset to 68 columns (66 measure columns for mean and std plus subject and label). The new dataset is called `reducedDS`. After the reducion, the script will use the varibles names for the 66 columns on `meanAnStd$V2` and update them to have descriptive name and then update the `reducedDS`column names with those. The rules to have a descriptive name are:
+Using the `meanAnStd` dataset the script reduced the input dataset to 68 columns (66 measure columns for mean and std plus subject and label). The new dataset is called `reducedDS`. After the reduction, the script will use the variables names for the 66 columns on `meanAnStd$V2` and update them to have descriptive name and then update the `reducedDS`column names with those. The rules to have a descriptive name are:
 * "-" was removed
 * "()" was removed
 * starting "t" -> "time"
