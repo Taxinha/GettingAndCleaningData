@@ -4,12 +4,12 @@
 library(dplyr)
 library(reshape2)
 
+outputFile <- "tidyData.txt"
+fileURL    <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+localFile  <- "./data/UCI_HAR_Dataset.zip"
+
 ## Download and Extract Zip data file
 downloadAndExtractZipFile <- function(){
-  ## Download Data file
-  fileURL   <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
-  localFile <- "./data/UCI_HAR_Dataset.zip"
-  
   ## check if the data folder exists
   if(!file.exists("data")){
     dir.create("data")
@@ -30,18 +30,13 @@ readDataFile <- function(fileName){
     stop(paste("readDataFile: File ", fileName, " doesn't exist"))
   }
   
-  print(paste("Reading ", fileName))
+  print(paste("Reading file ", fileName))
   read.table(fileName)
 }
 
-#1) Merges the training and the test sets to create one data set.
-#print("Merge Data 1")
-#trainDS <- mutate(trainX, Subject = trainSubject$V1, Label = trainY$V1)
-#print("Merge Data 2")
-#testDS <- mutate(testX, Subject = testSubject$V1, Label = testY$V1 )
-
-mergeTrainingAndTestSets <- function(){
-  #0 Read Files
+## Read the files and merges the training and test sets to create one data set.
+readAndMergeTrainingAndTestSets <- function(){
+  # Read Files
   print("Reading Files")
   trainX = readDataFile("./data/UCI HAR Dataset/train/X_train.txt")
   trainY = readDataFile("./data/UCI HAR Dataset/train/y_train.txt")
@@ -51,25 +46,29 @@ mergeTrainingAndTestSets <- function(){
   testY = readDataFile("./data/UCI HAR Dataset/test/y_test.txt")
   testSubject = readDataFile("./data/UCI HAR Dataset/test/subject_test.txt")
   
+  # Merge data sets
   print("Start merging...")
-  colnames(trainSubject) <- c("Subject")
-  colnames(trainY) <- c("Label")
+  colnames(trainSubject) <- c("subject")
+  colnames(trainY) <- c("label")
   trainDS <- cbind(trainX, trainY, trainSubject)
   
-  colnames(testSubject) <- c("Subject")
-  colnames(testY) <- c("Label")
+  colnames(testSubject) <- c("subject")
+  colnames(testY) <- c("label")
   testDS <- cbind(testX, testY, testSubject)
   
   mergedDS <- rbind(trainDS, testDS)
-  print("Merge Data - dimension check")
+  print("Merged DataSet - dimensions check")
   print(dim(mergedDS))
   
   mergedDS
 }
 
-#2) Extracts only the measurements on the mean and standard deviation for each measurement. 
+## Extracts only the measurements on the mean and standard deviation for 
+## each measurement. 
 extractMeanAndSTD <- function(dataSet){
   print("Extracts the mean and std")
+  
+  ## Read the features file
   features = readDataFile("./data/UCI HAR Dataset/features.txt")
   
   ## Get the Mean and STD rows
@@ -79,38 +78,48 @@ extractMeanAndSTD <- function(dataSet){
   reducedDS <- dataSet[, c(meanAndStd$V1, ncol(dataSet) - 1, ncol(dataSet))]
   
   ## 10299 x 68 (66 mean&std + subject + label)
-  print("Dimensions of the reduced dataset")
+  print("Reduced DataSet - dimensions check")
   print(dim(reducedDS))
   
-  #4) Appropriately labels the data set with descriptive variable names. 
-  colnames(reducedDS) <- c(as.character(meanAndStd$V2), "Label", "Subject")
+  ## Create descriptive activity names
+  variables <- meanAndStd$V2 %>%
+    gsub(pattern = "-|\\(|\\)", replacement = "") %>%
+    gsub(pattern = "^t", replacement = "time") %>%
+    gsub(pattern = "^f", replacement = "frequency") %>%
+    gsub(pattern = "BodyBody", replacement = "Body") %>%
+    gsub(pattern = "Acc", replacement = "accelerometer") %>%
+    gsub(pattern = "Gyro", replacement = "gyroscope") %>%
+    tolower()
+  
+  ## Appropriately labels the data set with descriptive variable names.
+  colnames(reducedDS) <- c(variables, "label", "subject")
   
   reducedDS
 }
 
-#3) Uses descriptive activity names to name the activities in the data set
+## Uses descriptive activity names to name the activities in the data set
 updateActivityNames <- function(dataSet){
-  print("Final DS")
+  print("Final DataSet")
   activityLabels = readDataFile("./data/UCI HAR Dataset/activity_labels.txt")
   
   finalDS <- dataSet %>%
-    merge(activityLabels, by.x = "Label", by.y = "V1") %>%
-    mutate(Activity = V2) %>%
-    select(-V2, -Label)
+    merge(activityLabels, by.x = "label", by.y = "V1") %>%
+    mutate(activity = V2) %>%
+    select(-V2, -label)
   
-  print("Dimensions of the final reduced dataset")
+  print("Final reduced DataSet - dimensions check")
   print(dim(finalDS))
   
   finalDS
 }
 
-#5) From the data set in step 4, creates a second, independent tidy data set with the average 
-## of each variable for each activity and each subject.
+## From the data set in step 4, creates a second, independent tidy data set 
+## with the average of each variable for each activity and each subject.
 tidyDataSet <- function(dataSet){
   tidyData <- 
     dataSet %>%
-    melt(id=c("Subject","Activity"), variable.name = "Feature") %>%
-    group_by(Subject, Activity, Feature) %>%
+    melt(id=c("subject","activity"), variable.name = "feature") %>%
+    group_by(subject, activity, feature) %>%
     summarise(mean(value))
   
   print("TidyData")
@@ -128,19 +137,23 @@ writeTidyDataFile <- function(tidyData, fileName){
   write.table(tidyData, fileName, row.name=FALSE)
 }
 
+## Read the tidy data file created before
+readTidyDataFile <- function(){
+  readDataFile(outputFile)
+}
+
 ## Main function
 main <- function(){
-  outputFile <- "tidyData.txt"
-  
+  print("Starting run_analysis...")
   downloadAndExtractZipFile()
   
-  mergeTrainingAndTestSets() %>%   ## Step 1
-    extractMeanAndSTD() %>%        ## Step 2 & 4
-    updateActivityNames() %>%      ## step 3
-    tidyDataSet() %>%              ## Step 5
-    writeTidyDataFile(outputFile)  ## step 5
+  readAndMergeTrainingAndTestSets() %>%   ## Step 1
+    extractMeanAndSTD() %>%               ## Step 2 & 4
+    updateActivityNames() %>%             ## step 3
+    tidyDataSet() %>%                     ## Step 5
+    writeTidyDataFile(outputFile)         ## step 5
   
-  ## readDataFile(outputFile)
+  print("Finish")
 }
 
 main()
