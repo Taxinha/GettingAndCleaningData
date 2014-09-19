@@ -25,13 +25,13 @@ downloadAndExtractZipFile <- function(){
 }
 
 ## Reads the data file
-readDataFile <- function(fileName){
+readDataFile <- function(fileName, ...){
   if(! file.exists(fileName)){
     stop(paste("readDataFile: File ", fileName, " doesn't exist"))
   }
   
   print(paste("Reading file ", fileName))
-  read.table(fileName)
+  read.table(fileName, ...)
 }
 
 ## Read the files and merges the training and test sets to create one data set.
@@ -89,6 +89,7 @@ extractMeanAndSTD <- function(dataSet){
     gsub(pattern = "BodyBody", replacement = "Body") %>%
     gsub(pattern = "Acc", replacement = "accelerometer") %>%
     gsub(pattern = "Gyro", replacement = "gyroscope") %>%
+    gsub(pattern = "Mag", replacement = "magnitude") %>%
     tolower()
   
   ## Appropriately labels the data set with descriptive variable names.
@@ -139,7 +140,7 @@ writeTidyDataFile <- function(tidyData, fileName){
 
 ## Read the tidy data file created before
 readTidyDataFile <- function(){
-  readDataFile(outputFile)
+  readDataFile(outputFile, header = TRUE)
 }
 
 ## Main function
