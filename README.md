@@ -11,18 +11,40 @@ To run the **run_analysis.R** script you will need to source the file in R or RS
 > source('run_analysis.R')
 ```
 
-Once you source the script, the main function will be called and will call the following functions: 
-1. downloadAndExtractZipFile
-2. readAndMergeTrainingAndTestSets
-3. extractMeanAndSTD
-4. updateActivityNames
-5. tidyDataSet
-6. writeTidyDataFile
+Once you sourced the script, the main function will be executed and will call the following functions: 
+
+1. `downloadAndExtractZipFile()`: this function will create a folder _data_ locally if doesn't exist and download the data zip file in https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip. After downaloding the function will extract all files.
+Alternative if you already have the zip file and don't want to download again, please make sure you have the foliwing folder structure and this function won't try to download and unzip the file:
+```
+data
+  |-UCI HAR Dataset
+      |-activity_labels.txt
+      |-features.txt
+      |-features_info.tx
+      |-README.txt
+      |-test
+      |   |-Inertial Signals (content ignored in this script)
+      |   |-subject_test.txt
+      |   |-X_test.txt
+      |   |-y_test.txt
+      |-train
+          |-Inertial Signals (content ignored in this script)
+          |-subject_train.txt
+          |-X_train.txt
+          |-y_train.txt
+```
+2. `readAndMergeTrainingAndTestSets`
+3. `extractMeanAndSTD`
+4. `updateActivityNames`
+5. `tidyDataSet`
+6. `writeTidyDataFile`
 
 
 
+### Auxiliar Functions
 
-### Axuxiliar Functions
+* `readDataFile(fileName, ...)`: this function checks if the file exists and if exits will read the file using `read.table` function and will pass any extra parameter `...` directly.
+If the file doesn't exist will `stop` with a file doesn't exist message.
 
 
 
@@ -35,4 +57,12 @@ Assuming the file is in the same folder as the run_analysis.R script and has the
 
 ```
 > tidyData <- readTidyDataFile()
+[1] "Reading file  tidyData.txt"
+> dim(tidyData)
+[1] 11880     4
+> head(tidyData, n = 2)
+  subject activity                    feature mean.value.
+1       1   LAYING timebodyaccelerometermeanx  0.22159824
+2       1   LAYING timebodyaccelerometermeany -0.04051395
 ```
+
