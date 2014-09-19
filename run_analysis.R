@@ -86,7 +86,7 @@ extractMeanAndSTD <- function(dataSet){
     gsub(pattern = "-|\\(|\\)", replacement = "") %>%
     gsub(pattern = "^t", replacement = "time") %>%
     gsub(pattern = "^f", replacement = "frequency") %>%
-    gsub(pattern = "BodyBody", replacement = "Body") %>%
+    gsub(pattern = "BodyBody", replacement = "body") %>%
     gsub(pattern = "Acc", replacement = "accelerometer") %>%
     gsub(pattern = "Gyro", replacement = "gyroscope") %>%
     gsub(pattern = "Mag", replacement = "magnitude") %>%
@@ -135,7 +135,7 @@ writeTidyDataFile <- function(tidyData, fileName){
     file.remove(fileName) 
   }
   
-  write.table(tidyData, fileName, row.name=FALSE)
+  write.table(tidyData, fileName, row.name = FALSE)
 }
 
 ## Read the tidy data file created before
@@ -157,6 +157,6 @@ main <- function(){
   print("Finish")
 }
 
-main()
+## main()
 
 
