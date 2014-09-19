@@ -1,3 +1,95 @@
-CodeBook
+Code Book
 ======================
+
+## Narrow Tidy Data description
+
+### subject
+Integer values from 1 until 30 that identifies the subject.
+ 
+### activity
+The values can be:
+```
+LAYING
+SITTING
+STANDING
+WALKING
+WALKING_DOWNSTAIRS
+WALKING_UPSTAIRS
+```
+
+### feature
+The values can be:
+```
+frequencybodyaccelerometerjerkmagnitudemean
+frequencybodyaccelerometerjerkmagnitudestd
+frequencybodyaccelerometerjerkmeanx
+frequencybodyaccelerometerjerkmeany
+frequencybodyaccelerometerjerkmeanz
+frequencybodyaccelerometerjerkstdx
+frequencybodyaccelerometerjerkstdy
+frequencybodyaccelerometerjerkstdz
+frequencybodyaccelerometermagnitudemean
+frequencybodyaccelerometermagnitudestd
+frequencybodyaccelerometermeanx
+frequencybodyaccelerometermeany
+frequencybodyaccelerometermeanz
+frequencybodyaccelerometerstdx
+frequencybodyaccelerometerstdy
+frequencybodyaccelerometerstdz
+frequencybodygyroscopejerkmagnitudemean
+frequencybodygyroscopejerkmagnitudestd
+frequencybodygyroscopemagnitudemean
+frequencybodygyroscopemagnitudestd
+frequencybodygyroscopemeanx
+frequencybodygyroscopemeany
+frequencybodygyroscopemeanz
+frequencybodygyroscopestdx
+frequencybodygyroscopestdy
+frequencybodygyroscopestdz
+timebodyaccelerometerjerkmagnitudemean
+timebodyaccelerometerjerkmagnitudestd
+timebodyaccelerometerjerkmeanx
+timebodyaccelerometerjerkmeany
+timebodyaccelerometerjerkmeanz
+timebodyaccelerometerjerkstdx
+timebodyaccelerometerjerkstdy
+timebodyaccelerometerjerkstdz
+timebodyaccelerometermagnitudemean
+timebodyaccelerometermagnitudestd
+timebodyaccelerometermeanx
+timebodyaccelerometermeany
+timebodyaccelerometermeanz
+timebodyaccelerometerstdx
+timebodyaccelerometerstdy
+timebodyaccelerometerstdz
+timebodygyroscopejerkmagnitudemean
+timebodygyroscopejerkmagnitudestd
+timebodygyroscopejerkmeanx
+timebodygyroscopejerkmeany
+timebodygyroscopejerkmeanz
+timebodygyroscopejerkstdx
+timebodygyroscopejerkstdy
+timebodygyroscopejerkstdz
+timebodygyroscopemagnitudemean
+timebodygyroscopemagnitudestd
+timebodygyroscopemeanx
+timebodygyroscopemeany
+timebodygyroscopemeanz
+timebodygyroscopestdx
+timebodygyroscopestdy
+timebodygyroscopestdz
+timegravityaccelerometermagnitudemean
+timegravityaccelerometermagnitudestd
+timegravityaccelerometermeanx
+timegravityaccelerometermeany
+timegravityaccelerometermeanz
+timegravityaccelerometerstdx
+timegravityaccelerometerstdy
+timegravityaccelerometerstdz
+```
+
+### mean(value)
+
+
+
 
