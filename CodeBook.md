@@ -2,6 +2,7 @@ Code Book
 ======================
 
 ## Narrow Tidy Data description
+There is a row for each _subject_, _activity_ and _feature_
 
 ### subject
 Integer values from 1 until 30 that identifies the subject.
@@ -89,6 +90,7 @@ timegravityaccelerometerstdz
 ```
 
 ### mean(value)
+This will have the average feature for each activity and each subject.
 
 
 

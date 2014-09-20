@@ -56,13 +56,14 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <h1>Code Book</h1>
 <div id="narrow-tidy-data-description" class="section level2">
 <h2>Narrow Tidy Data description</h2>
+<p>There is a row for each <em>subject</em>, <em>activity</em> and <em>feature</em></p>
 <div id="subject" class="section level3">
 <h3>subject</h3>
-<p>Integer values from 1 until 30.</p>
+<p>Integer values from 1 until 30 that identifies the subject.</p>
 </div>
 <div id="activity" class="section level3">
 <h3>activity</h3>
-<p>The values can only be:</p>
+<p>The values can be:</p>
 <pre><code>LAYING
 SITTING
 STANDING
@@ -72,7 +73,7 @@ WALKING_UPSTAIRS</code></pre>
 </div>
 <div id="feature" class="section level3">
 <h3>feature</h3>
-<p>The values can only be:</p>
+<p>The values can be:</p>
 <pre><code>frequencybodyaccelerometerjerkmagnitudemean
 frequencybodyaccelerometerjerkmagnitudestd
 frequencybodyaccelerometerjerkmeanx
@@ -142,6 +143,7 @@ timegravityaccelerometerstdz</code></pre>
 </div>
 <div id="meanvalue" class="section level3">
 <h3>mean(value)</h3>
+<p>This will have the average feature for each activity and each subject.</p>
 </div>
 </div>
 </div>
